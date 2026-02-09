@@ -1,7 +1,4 @@
-# {{cookiecutter.__project_slug}}
-
-[![Dynamic TOML Badge](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2F{{cookiecutter.github_user}}%2F{{cookiecutter.github_repo}}%2Frefs%2Fheads%2Fmain%2Ftypst.toml&query=%24.package.version&prefix=v&logo=typst&label=template&color=239DAD)](https://typst.app/universe/package/rubber-article)
-[![User Manual](https://img.shields.io/badge/doc-.pdf-mediumpurple)](https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.github_repo}}/blob/main/docs/docs.pdf)
+# {{ project }}
 
 A short description about the project and/or client.
 
@@ -40,7 +37,7 @@ A short description about the project and/or client.
 These instructions will get you a copy of the project up and running on the typst web app. Perhaps a short code example on importing the package and a very simple teaser usage.
 
 ```typ
-#import "@preview/{{cookiecutter.__project_slug}}:0.1.0": *
+#import "@preview/{{ project }}:0.1.0": *
 
 #show: my-show-rule.with()
 #my-func()
@@ -66,7 +63,7 @@ $ Final step
 A more in-depth description of usage. Any template arguments? A complicated example that showcases most if not all of the functions the package provides? This is also an excellent place to signpost the manual.
 
 ```typ
-#import "@preview/{{cookiecutter.__project_slug}}:0.1.0": *
+#import "@preview/{{ project }}:0.1.0": *
 
 #let my-complicated-example = ...
 ```

@@ -1,0 +1,100 @@
+_default:
+    @just --list --unsorted
+
+# generate manual
+[group("typst")]
+doc:
+    typst compile docs/docs.typ docs/docs.pdf
+
+# generate the thumbnail
+[group("typst")]
+thumbnail:
+    typst compile docs/thumbnail.typ thumbnail.png
+
+# compile the template
+[group("typst")]
+template:
+    typst compile template/main.typ --package-path ~/.local/share/typst/packages
+
+# run test suite (with tytanic)
+[group("test")]
+test *args:
+    tt run {{ args }}
+
+# update test cases (with tytanic)
+[group("test")]
+update *args:
+    tt update {{ args }}
+
+# install the library with the "@local" prefix
+[group("dev")]
+install:
+    gotpm install
+
+# install the library with the "@preview" prefix (for pre-release testing)
+[group("dev")]
+install-preview:
+    gotpm install -n preview
+
+# uninstalls the library from the "@local" prefix
+[group("dev")]
+uninstall:
+    gotpm uninstall
+
+# uninstalls the library from the "@preview" prefix (for pre-release testing)
+[group("dev")]
+uninstall-preview:
+    gotpm uninstall -n "preview"
+
+# run typst package checker
+[group("test")]
+check:
+    typst-package-check check
+
+# run ci suite (test, doc, thumbnail)
+[group("test")]
+ci: test doc thumbnail
+
+# setup the pre-commit hooks
+[group("chore")]
+hooks:
+    prek install
+
+# initialize a git repo and add all files
+[group("chore")]
+init:
+    git init
+    just hooks
+    git add .
+    git commit -m "initial commit"
+    @echo "{{ GREEN }}{{ BOLD }}Git has been initialized{{ NORMAL }}"
+
+# write the changelog
+[group("chore")]
+changelog VERSION="auto":
+    uvx git-changelog -Tio CHANGELOG.md -B="{{VERSION}}" -c conventional
+
+
+# bump the version, commit and tag (<major, minor, patch> or semver)
+[group("chore")]
+bump VERSION: && tag
+    uv version  {{ VERSION }}
+    uv lock
+
+# tag the latest version
+[group("chore")]
+[private]
+tag VERSION=`uv version --short`:
+    git add pyproject.toml
+    git add uv.lock
+    git commit -m "chore: bumped version to {{VERSION}}"
+    git tag -a "v{{VERSION}}"
+
+# make a new release (e.g. "just release 0.1.2") (repo must be clean)
+[group("chore")]
+release VERSION: test
+    @just changelog "v{{VERSION}}"
+    git add CHANGELOG.md
+    git commit -m "chore: updated Changelog"
+    @just bump "{{VERSION}}"
+    @echo "{{GREEN}}Success! Run 'git push && git push --tags' now.{{NORMAL}}"

@@ -1,25 +1,25 @@
 # for a description of available keys, see https://github.com/typst/packages/?tab=readme-ov-file#package-format
 
 [package]
-name = "{{cookiecutter.__project_slug}}"
+name = "{{ project }}"
 version = "0.1.0"
 entrypoint = "src/lib.typ"
-authors = ["{{cookiecutter.github_user}}"]
+authors = ["{{ git_user }}"]
 license = "MIT"
 description = "Add a little description here"
-repository = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.github_repo}}.git"
+repository = "https://github.com/{{ git_user }}/{{ project }}.git"
 keywords = ["template", "article"]
 categories = ["paper", "report"]
-disciplines = ["biology", "chemistry", "engineering", "geography", "mathematics", "physics"]
-compiler = "0.13.0"
-exclude = [
-	".github",
-	"docs",
-	"scripts",
-	"tests",
-	".typstignore",
-	"Justfile",
+disciplines = [
+	"biology",
+	"chemistry",
+	"engineering",
+	"geography",
+	"mathematics",
+	"physics",
 ]
+compiler = "0.13.0"
+exclude = [".github", "docs", "scripts", "tests", ".typstignore", "Justfile"]
 
 [template]
 path = "template"

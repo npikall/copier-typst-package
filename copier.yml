@@ -1,0 +1,36 @@
+# CONFIGURATION -------------------------
+_min_copier_version: "9"
+_envops:
+  autoescape: false
+  keep_trailing_newline: true
+_subdirectory: template
+_templates_suffix: .jinja
+
+# PROMPT --------------------------------
+project:
+  type: str
+  qmark: "->"
+  help: Set the project name
+
+git_user:
+  type: str
+  qmark: "->"
+  help: Set the git name
+  default: "{{ 'Niko Pikall' }}"
+
+git_email:
+  type: str
+  qmark: "->"
+  help: Set the git email
+  default: "{{ 'nikolas.pikall@gmail.com' }}"
+
+copyright_license:
+  type: str
+  qmark: "->"
+  help: Choose a license
+  default: MIT
+  choices:
+    Apache License 2.0: Apache-2.0
+    MIT License: MIT
+    The Unlicense: Unlicense
+    None: None
