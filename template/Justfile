@@ -1,9 +1,32 @@
+root := justfile_directory()
+export TYPST_ROOT := root
+
+[default]
 _default:
     @just --list --unsorted
 
+alias i := install
+alias u := uninstall
+alias ip := install-preview
+alias up := uninstall-preview
+
+# display the system/project information
+[group("chore")]
+info:
+    @echo "{{ CYAN }}Arch{{ NORMAL }}: {{ arch() }}"
+    @echo "{{ CYAN }}OS{{ NORMAL }}: {{ os_family() }}, {{ os() }}"
+    @echo "{{ CYAN }}Num CPU's{{ NORMAL }}: {{ num_cpus() }}"
+    @echo "{{ CYAN }}Project{{ NORMAL }}: `gotpm bump --show-current`"
+
+# install the pre-commit hooks
+[group("chore")]
+hooks:
+    uvx prek install
+
+
 # generate manual
 [group("typst")]
-doc:
+docs:
     typst compile docs/docs.typ docs/docs.pdf
 
 # generate the thumbnail
@@ -16,85 +39,79 @@ thumbnail:
 template:
     typst compile template/main.typ --package-path ~/.local/share/typst/packages
 
-# run test suite (with tytanic)
+# run test suite
 [group("test")]
 test *args:
     tt run {{ args }}
 
-# update test cases (with tytanic)
+# update test cases
 [group("test")]
 update *args:
     tt update {{ args }}
 
 # install the library with the "@local" prefix
-[group("dev")]
+[group("chore")]
 install:
     gotpm install
 
 # install the library with the "@preview" prefix (for pre-release testing)
-[group("dev")]
+[group("chore")]
 install-preview:
     gotpm install -n preview
 
 # uninstalls the library from the "@local" prefix
-[group("dev")]
+[group("chore")]
 uninstall:
     gotpm uninstall
 
 # uninstalls the library from the "@preview" prefix (for pre-release testing)
-[group("dev")]
+[group("chore")]
 uninstall-preview:
-    gotpm uninstall -n "preview"
+    gotpm uninstall -n preview
+
+# package the library into the specified destination folder
+[group("chore")]
+package target:
+    TYPST_PACKAGE_PATH="{{ target }}" gotpm install
 
 # run typst package checker
 [group("test")]
 check:
-    typst-package-check check
+    just package out
+    -cd out/local/rubber-article/`gotpm bump -c` && typst-package-check check
+    rm -rf out/
 
 # run ci suite (test, doc, thumbnail)
 [group("test")]
-ci: test doc thumbnail
+ci: test docs thumbnail check
 
-# setup the pre-commit hooks
+# update the package version
 [group("chore")]
-hooks:
-    prek install
+bump incr="patch":
+    uv run ./scripts/bump.py `gotpm bump --show-current` `gotpm bump {{ incr }} --show-next`
+    gotpm bump {{ incr }} --indent
 
-# initialize a git repo and add all files
+
+_ensure_clean:
+    @git diff --quiet
+    @git diff --cached --quiet
+
+# write the changelog from commit messages (gh:pawamoy/git-changelog)
 [group("chore")]
-init:
-    git init
-    just hooks
-    git add .
-    git commit -m "initial commit"
-    @echo "{{ GREEN }}{{ BOLD }}Git has been initialized{{ NORMAL }}"
+changelog version=`gotpm bump -c`:
+    git-changelog -Tio CHANGELOG.md -B="{{ version }}" -c conventional
 
-# write the changelog
+_commit_and_tag version=`gotpm bump --show-current`:
+    git add typst.toml README.md template/main.typ docs/docs.typ docs/docs.pdf CHANGELOG.md
+    git commit -m "chore(release): bumped version to {{ version }}"
+    git tag -a "v{{ version }}"
+
+# make a new release [target:<major|minor|patch> or semver]
 [group("chore")]
-changelog VERSION="auto":
-    uvx git-changelog -Tio CHANGELOG.md -B="{{VERSION}}" -c conventional
-
-
-# bump the version, commit and tag (<major, minor, patch> or semver)
-[group("chore")]
-bump VERSION: && tag
-    uv version  {{ VERSION }}
-    uv lock
-
-# tag the latest version
-[group("chore")]
-[private]
-tag VERSION=`uv version --short`:
-    git add pyproject.toml
-    git add uv.lock
-    git commit -m "chore: bumped version to {{VERSION}}"
-    git tag -a "v{{VERSION}}"
-
-# make a new release (e.g. "just release 0.1.2") (repo must be clean)
-[group("chore")]
-release VERSION: test
-    @just changelog "v{{VERSION}}"
-    git add CHANGELOG.md
-    git commit -m "chore: updated Changelog"
-    @just bump "{{VERSION}}"
-    @echo "{{GREEN}}Success! Run 'git push && git push --tags' now.{{NORMAL}}"
+release target: test check
+    @just _ensure_clean
+    @just bump {{ target }}
+    @just changelog
+    @just docs
+    @just _commit_and_tag
+    @echo "{{ GREEN }}Release complete. Run 'git push && git push --tags'.{{ NORMAL }}"
