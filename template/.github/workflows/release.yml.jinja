@@ -1,24 +1,24 @@
 name: Package and push to registry repo
 on:
   push:
-    tags: [ v* ]
+    tags: [v*]
 
 env:
   # the repository to which to push the release version
   # usually a fork of typst/packages (https://github.com/typst/packages/)
   # that you have push privileges to
-  REGISTRY_REPO: {{cookiecutter.github_user}}/typst-packages
+  REGISTRY_REPO: {{ git_user }}/typst-packages
   # the path within that repo where the "<name>/<version>" directory should be put
   # for the Typst package registry, keep this as is
   PATH_PREFIX: packages/preview
+  PKG_NAME: {{ project }}
 
-{% raw %}
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Probe runner package cache
         uses: awalsh128/cache-apt-pkgs-action@v1
@@ -36,21 +36,17 @@ jobs:
         with:
           typst-version: latest
 
-      - name: Determine and check package metadata
-        run: |
-          . scripts/setup
-          echo "PKG_NAME=${PKG_PREFIX}" >> "${GITHUB_ENV}"
-          echo "PKG_VERSION=${VERSION}" >> "${GITHUB_ENV}"
-
-          if [[ "${GITHUB_REF_NAME}" != "v${VERSION}" ]]; then
-            echo "package version ${VERSION} does not match release tag ${GITHUB_REF_NAME}" >&2
-            exit 1
-          fi
+      - name: Setup Go and gotpm
+        uses: actions/setup-go@v6
+        with:
+          go-version: "1.26"
+      - run: go install github.com/npikall/gotpm@latest
 
       - name: Build package
         run: |
           just package out
 
+      {% raw %}
       - name: Checkout package registry
         uses: actions/checkout@v4
         with:
@@ -60,9 +56,11 @@ jobs:
 
       - name: Release package
         run: |
-          mkdir -p "typst-packages/${{ env.PATH_PREFIX }}/$PKG_NAME"
-          mv "out/${PKG_NAME}/${PKG_VERSION}" "typst-packages/${{ env.PATH_PREFIX }}/${PKG_NAME}"
-          rmdir "out/${PKG_NAME}"
+          PKG_VERSION="$(gotpm bump --show-current)"
+          mkdir -p "typst-packages/${{ env.PATH_PREFIX }}/${{ env.PKG_NAME }}"
+          mv "out/local/${{ env.PKG_NAME }}/${PKG_VERSION}" "typst-packages/${{ env.PATH_PREFIX }}/${{ env.PKG_NAME }}"
+          rmdir "out/local/${{ env.PKG_NAME }}"
+          rmdir out/local
           rmdir out
 
           GIT_USER_NAME="$(git log -1 --pretty=format:'%an')"
@@ -71,8 +69,7 @@ jobs:
           cd typst-packages
           git config user.name "${GIT_USER_NAME}"
           git config user.email "${GIT_USER_EMAIL}"
-          git checkout -b "${PKG_NAME}-${PKG_VERSION}"
+          git checkout -b "${{ env.PKG_NAME }}-${PKG_VERSION}"
           git add .
-          git commit -m "${PKG_NAME}:${PKG_VERSION}"
-          git push --set-upstream origin "${PKG_NAME}-${PKG_VERSION}"
-{% endraw %}
+          git commit -m "${{ env.PKG_NAME }}:${PKG_VERSION}"
+          git push --set-upstream origin "${{ env.PKG_NAME }}-${PKG_VERSION}"{% endraw %}
