@@ -1,4 +1,4 @@
-# Cookiecutter for Typst Packages
+# Copier Template for Typst Packages
 
 This `cookiecutter` sets up a fresh package repository for you to start writing a `typst` template or package.
 
@@ -8,14 +8,19 @@ Run the following command in your terminal:
 
 ```bash
 # Assuming you have uv installed
-uvx cookiecutter https://github.com/npikall/cookiecutter-typst-package
+uvx copier copy  "gh:npikall/copier-typst-package" path/to/project/
 ```
 
-Find [uv] here or install `cookiecutter` with `pip` first like this:
+Find [uv] here or install `copier` with `pip` first like this:
 
 ```bash
-pip install cookiecutter
-cookiecutter https://github.com/npikall/cookiecutter-typst-package
+pip install copier
+
+# global installation with uv
+uv tool install copier
+
+# render the template
+copier copy  "gh:npikall/copier-typst-package" path/to/project/
 ```
 
 [uv]: https://docs.astral.sh/uv/
