@@ -16,7 +16,7 @@ git_user:
   type: str
   qmark: "->"
   help: Set the git name
-  default: "{{ 'Niko Pikall' }}"
+  default: "{{ 'npikall' }}"
 
 git_email:
   type: str
