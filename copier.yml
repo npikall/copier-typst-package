@@ -9,25 +9,21 @@ _templates_suffix: .jinja
 # PROMPT --------------------------------
 project:
   type: str
-  qmark: "->"
   help: Set the project name
 
 git_user:
   type: str
-  qmark: "->"
-  help: Set the git name
+  help: Set the Git User Name
   default: "{{ 'npikall' }}"
 
 git_email:
   type: str
-  qmark: "->"
-  help: Set the git email
-  default: "{{ 'nikolas.pikall@gmail.com' }}"
+  help: Set the Git Email
+  default: "{{ 'example@email.com' }}"
 
 copyright_license:
   type: str
-  qmark: "->"
-  help: Choose a license
+  help: Choose a License
   default: MIT
   choices:
     Apache License 2.0: Apache-2.0
