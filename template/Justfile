@@ -11,12 +11,13 @@ alias ip := install-preview
 alias up := uninstall-preview
 alias fmt := format
 
-gotpm := require("gotpm") # get it here: https://github.com/npikall/gotpm
-tt := require("tt") # get it here: https://typst-community.github.io/tytanic/quickstart/install.html
-typst := require("typst") # get it here: https://github.com/typst/typst#installation
-typst-package-check := require("typst-package-check") # get it here: https://github.com/typst/package-check#using-this-tool
-typstyle := require("typstyle") # get it here: https://github.com/typst/typstyle
-uvx := require("uvx") # get it here: https://docs.astral.sh/uv/getting-started/installation/
+# Get all the required dependencies here:
+# tt:       https://typst-community.github.io/tytanic/quickstart/install.html
+# uvx:      https://docs.astral.sh/uv/getting-started/installation/
+# gotpm:    https://github.com/npikall/gotpm
+# typst:    https://github.com/typst/typst#installation
+# typstyle: https://github.com/typst/typstyle
+# typst-package-check: https://github.com/typst/package-check#using-this-tool
 
 # install the pre-commit hooks
 [group("dev")]
@@ -75,13 +76,13 @@ uninstall-preview:
 
 # package the library into the specified destination folder
 [group("dev")]
-dist target:
+dist target="dist":
     GOTPM_INSTALL_DIR="{{ target }}" gotpm install
 
 # run typst package checker
 [group("test")]
 check:
-    just dist dist
+    just dist
     -typst-package-check check dist
     rm -rf dist
 
