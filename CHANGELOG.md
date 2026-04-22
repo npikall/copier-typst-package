@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [v0.1.2](https://github.com/npikall/cookiecutter-typst-package/releases/tag/v0.1.2) - 2026-04-22
+
+<small>[Compare with v0.1.1](https://github.com/npikall/cookiecutter-typst-package/compare/v0.1.1...v0.1.2)</small>
+
+### Bug Fixes
+
+- slugify project name ([78bdfd6](https://github.com/npikall/cookiecutter-typst-package/commit/78bdfd6f2d76756ee456d2b6029364b32d95a886) by npikall).
+
+### Reverts
+
+- don't require binaries ([de0cf92](https://github.com/npikall/cookiecutter-typst-package/commit/de0cf92e77838a299840315904721b58b26287e6) by npikall).
+
 ## [v0.1.1](https://github.com/npikall/cookiecutter-typst-package/releases/tag/v0.1.1) - 2026-04-22
 
 <small>[Compare with v0.1.0](https://github.com/npikall/cookiecutter-typst-package/compare/v0.1.0...v0.1.1)</small>
