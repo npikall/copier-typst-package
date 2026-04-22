@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [v0.1.1](https://github.com/npikall/cookiecutter-typst-package/releases/tag/v0.1.1) - 2026-04-22
+
+<small>[Compare with v0.1.0](https://github.com/npikall/cookiecutter-typst-package/compare/v0.1.0...v0.1.1)</small>
+
+### Features
+
+- improve recipes ([9a25c27](https://github.com/npikall/cookiecutter-typst-package/commit/9a25c2755ffa39d29cc4bd088518520e5acc32b8) by npikall).
+- use official typstyle pre-commit hook ([360627e](https://github.com/npikall/cookiecutter-typst-package/commit/360627e774a6786d54413d11ca98f1939d56616b) by npikall).
+
 ## [v0.1.0](https://github.com/npikall/cookiecutter-typst-package/releases/tag/v0.1.0) - 2026-02-26
 
 <small>[Compare with first commit](https://github.com/npikall/cookiecutter-typst-package/compare/04ce56c959042d0d1aafeda62d4564afea0b8a1e...v0.1.0)</small>
