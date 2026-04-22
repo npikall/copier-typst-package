@@ -1,19 +1,13 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0 # the release, git tag, or commit you want to use
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: check-added-large-files
       - id: detect-private-key
 
-  - repo: local
+  - repo: https://github.com/typstyle-rs/pre-commit-typstyle
+    rev: v0.14.4
     hooks:
       - id: typstyle
-        name: typstyle
-        description: Format files with typstyle
-        entry: typstyle
-        language: rust
-        types: [file]
-        additional_dependencies: ["cli:typstyle:0.13.13"]
-        files: \.typ$
-        args: ["-i", "--wrap-text", "--line-width=80"]
+        args: ["--wrap-text", "-i"]
