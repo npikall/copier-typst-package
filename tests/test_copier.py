@@ -113,3 +113,9 @@ def test_license_renders_correct(session_tmp_path: Path):
     got = (session_tmp_path / "LICENSE").read_text()
     want = f"Copyright (c) {CURRENT_YEAR} jdoe"
     assert want in got
+
+
+def test_typstignore_renders_correct(session_tmp_path: Path):
+    got = (session_tmp_path / ".typstignore").read_text()
+    want = ".github"
+    assert want in got
