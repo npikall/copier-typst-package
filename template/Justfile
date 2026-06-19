@@ -1,3 +1,12 @@
+# Get all the required dependencies here:
+# Run 'bash scripts/install-deps.sh' to install all dependencies automatically.
+# tt:       https://typst-community.github.io/tytanic/quickstart/install.html
+# uvx:      https://docs.astral.sh/uv/getting-started/installation/
+# gotpm:    https://github.com/npikall/gotpm
+# typst:    https://github.com/typst/typst#installation
+# typstyle: https://github.com/typst/typstyle
+# typst-package-check: https://github.com/typst/package-check#using-this-tool
+
 root := justfile_directory()
 export TYPST_ROOT := root
 
@@ -10,14 +19,6 @@ alias u := uninstall
 alias ip := install-preview
 alias up := uninstall-preview
 alias fmt := format
-
-# Get all the required dependencies here:
-# tt:       https://typst-community.github.io/tytanic/quickstart/install.html
-# uvx:      https://docs.astral.sh/uv/getting-started/installation/
-# gotpm:    https://github.com/npikall/gotpm
-# typst:    https://github.com/typst/typst#installation
-# typstyle: https://github.com/typst/typstyle
-# typst-package-check: https://github.com/typst/package-check#using-this-tool
 
 # install the pre-commit hooks
 [group("dev")]
