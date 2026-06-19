@@ -75,6 +75,12 @@ uninstall *args:
 uninstall-preview:
     gotpm uninstall -n preview
 
+# sync package into typst/packages fork [arg: path to cloned repo]
+[group("package")]
+sync packages_dir=(env_var("HOME") / "typst" / "packages"):
+    @test -d "{{ packages_dir }}" || { echo "error: '{{ packages_dir }}' not found. Run 'bash scripts/setup-packages-repo.sh' first."; exit 1; }
+    TYPST_PACKAGE_PATH="{{ packages_dir }}/packages" gotpm install -n preview -f
+
 # package the library into the specified destination folder
 [group("dev")]
 dist target="dist":
