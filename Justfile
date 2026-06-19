@@ -106,6 +106,14 @@ docs:
     uv sync --dev
     uv run zensical serve
 
+# render template to a temp dir for manual inspection
+render:
+    copier copy . ./rendered --overwrite --trust --defaults -r HEAD \
+        --data project=example \
+        --data git_user="John Doe" \
+        --data git_email=john.doe@mail.com \
+        --data copyright_license=MIT
+
 _ensure_clean:
     @git diff --quiet
     @git diff --cached --quiet
