@@ -34,14 +34,13 @@ def test_copier_links_all_files_correct(
         ".typstignore",
         ".pre-commit-config.yaml",
         "CHANGELOG.md",
-        "Justfile",
+        "justfile",
         "LICENSE",
         "README.md",
         "typst.toml",
         "template/main.typ",
         "src/lib.typ",
         "scripts/install-deps.sh",
-        "scripts/setup-packages-repo.sh",
         "docs/docs.typ",
         "docs/thumbnail.typ",
         ".github/ISSUE_TEMPLATE/1-bug.md",
@@ -50,7 +49,6 @@ def test_copier_links_all_files_correct(
         ".github/ISSUE_TEMPLATE/4-change.md",
         ".github/workflows/ci.yml",
         ".github/workflows/release.yml",
-        ".github/workflows/release_github.yml",
         ".copier-answers.yml",
     ]
 
