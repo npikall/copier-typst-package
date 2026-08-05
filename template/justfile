@@ -21,84 +21,71 @@ alias up := uninstall-preview
 alias fmt := format
 
 # install the pre-commit hooks
-[group("dev")]
-hooks:
+hooks-install:
     uvx prek install
 
+# run pre-commit hooks
+hooks:
+    uvx prek run -a
+
 # generate manual
-[group("typst")]
 docs:
     typst compile docs/docs.typ docs/docs.pdf
 
 # generate the thumbnail
-[group("typst")]
 thumbnail:
     typst compile docs/thumbnail.typ thumbnail.png
 
 # compile the template
-[group("typst")]
 template:
     typst compile template/main.typ
 
 # format the .typ files
-[group("typst")]
 format:
     typstyle -i --wrap-text .
 
 # run test suite
-[group("test")]
 test *args:
     tt run {{ args }}
 
 # update test cases
-[group("test")]
-update *args:
+test-update *args:
     tt update {{ args }}
 
-# install the library with the "@local" prefix
-[group("package")]
+# install the library into "@local"
 install *args:
     gotpm install {{ args }}
 
-# install the library with the "@preview" prefix (for pre-release testing)
-[group("package")]
-install-preview:
-    gotpm install -n preview
+# install the library into "@preview"
+install-preview *args:
+    gotpm install -n preview {{ args }}
 
-# uninstalls the library from the "@local" prefix
-[group("package")]
+# uninstall the library from "@local"
 uninstall *args:
     gotpm uninstall {{ args }}
 
-# uninstalls the library from the "@preview" prefix (for pre-release testing)
-[group("package")]
-uninstall-preview:
-    gotpm uninstall -n preview
+# uninstall the library from "@preview"
+uninstall-preview *args:
+    gotpm uninstall -n preview {{ args }}
 
-# sync package into typst/packages fork [arg: path to cloned repo]
-[group("package")]
-sync packages_dir=(env_var("HOME") / "typst" / "packages"):
-    @test -d "{{ packages_dir }}" || { echo "error: '{{ packages_dir }}' not found. Run 'bash scripts/setup-packages-repo.sh' first."; exit 1; }
-    TYPST_PACKAGE_PATH="{{ packages_dir }}/packages" gotpm install -n preview -f
+# publish a package to the typst universe
+publish *args:
+    gotpm publish {{ args }}
 
 # package the library into the specified destination folder
-[group("dev")]
 dist target="dist":
     GOTPM_INSTALL_DIR="{{ target }}" gotpm install
 
 # run typst package checker
-[group("test")]
 check:
     just dist
     -typst-package-check check dist
     rm -rf dist
 
 # run ci suite (test, doc, thumbnail)
-[group("test")]
 ci: test docs thumbnail check
 
 # update the package version
-[group("dev")]
 _bump incr="patch":
     gotpm bump {{ incr }} --indent
 
@@ -107,7 +94,6 @@ _ensure_clean:
     @git diff --cached --quiet
 
 # write the changelog from commit messages (gh:pawamoy/git-changelog)
-[group("dev")]
 changelog version=`gotpm bump -c`:
     uvx git-changelog -Tio CHANGELOG.md -B="{{ version }}" -c conventional
 
@@ -117,7 +103,6 @@ _commit_and_tag version=`gotpm bump --show-current`:
     git tag -a "v{{ version }}"
 
 # make a new release [target:<major|minor|patch> or semver]
-[group("dev")]
 release target: test check
     @just _ensure_clean
     @just _bump {{ target }}
