@@ -10,8 +10,10 @@
 .github
 scripts
 tests
-Justfile
+justfile
 # PDF manuals should be included so that they can be linked, but not their sources
 docs/*
 .gitignore
 .pre-commit-config.yaml
+.copier-answers.yml
+CHANGELOG.md
