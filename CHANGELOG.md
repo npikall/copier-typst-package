@@ -6,6 +6,30 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [v0.2.0](https://github.com/npikall/cookiecutter-typst-package/releases/tag/v0.2.0) - 2026-08-05
+
+<small>[Compare with v0.1.2](https://github.com/npikall/cookiecutter-typst-package/compare/v0.1.2...v0.2.0)</small>
+
+### Features
+
+- add sync recipe ([11a4e9a](https://github.com/npikall/cookiecutter-typst-package/commit/11a4e9a34c7774143a1f365069fbba9f63a6f504) by npikall).
+- add shell script to clone typst/packages repo ([c147eca](https://github.com/npikall/cookiecutter-typst-package/commit/c147eca05c9cd8b47eef442eb08d0ad75601bf21) by npikall).
+- add shell script to install all dependencies ([6d8bd52](https://github.com/npikall/cookiecutter-typst-package/commit/6d8bd52495bd9b842daf2102afb287391ad6c873) by npikall).
+
+### Bug Fixes
+
+- usage instructions in script ([a0e01b7](https://github.com/npikall/cookiecutter-typst-package/commit/a0e01b729107fa7d902740b26ec1846261c90d85) by npikall).
+
+### Reverts
+
+- remove the script to fork typst-packages ([9e43161](https://github.com/npikall/cookiecutter-typst-package/commit/9e4316135b1d81da43458acf9466766b3b3d9a96) by npikall).
+
+### Code Refactoring
+
+- rename release workflow ([8986b3a](https://github.com/npikall/cookiecutter-typst-package/commit/8986b3acedade65deff68102d9b130ac7ec47ddc) by npikall).
+- add files to typstignore ([04e1cdf](https://github.com/npikall/cookiecutter-typst-package/commit/04e1cdf6df903f40f3f153e4947895b3597f2205) by npikall).
+- remove groups and add publish recipe ([f58d21a](https://github.com/npikall/cookiecutter-typst-package/commit/f58d21ad701cfad8dbcbccf02c2957f181937a26) by npikall).
+
 ## [v0.1.2](https://github.com/npikall/cookiecutter-typst-package/releases/tag/v0.1.2) - 2026-04-22
 
 <small>[Compare with v0.1.1](https://github.com/npikall/cookiecutter-typst-package/compare/v0.1.1...v0.1.2)</small>
